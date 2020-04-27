@@ -1,0 +1,35 @@
+{
+  "name": "webpay",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build:production": "vue-cli-service build",
+    "build:stable": "vue-cli-service build --mode stable",
+    "build:release": "vue-cli-service build --mode release"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "element-ui": "^2.4.3",
+    "js-md5": "^0.7.3",
+    "less": "^3.11.1",
+    "less-loader": "^6.0.0",
+    "loadjs": "^3.6.1",
+    "normalize.css": "^8.0.1",
+    "qs": "^6.6.0",
+    "vue": "^2.5.21",
+    "vue-router": "^3.0.2",
+    "vue2-toast": "^2.0.2",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.2.2",
+    "@vue/cli-service": "^3.2.3",
+    "@vue/test-utils": "^1.0.0-beta.28",
+    "babel-plugin-component": "^1.1.1",
+    "chai": "^4.2.0",
+    "node-sass": "^4.11.0",
+    "sass-loader": "^7.1.0",
+    "vue-template-compiler": "^2.5.21"
+  }
+}
