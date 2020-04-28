@@ -7,5 +7,5 @@ npm run serve
 ```
 ### 服务端(进入serve文件夹)
 ```bash
-node app
+npm run start
 ```
