@@ -4,13 +4,13 @@
         <div class="ms-register">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="demo-ruleForm">
                 <el-form-item prop="username">
-                    <el-input v-model="ruleForm.username" placeholder="username"></el-input>
+                    <el-input v-model="ruleForm.username" placeholder="用户名"></el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input type="password" placeholder="password" v-model="ruleForm.password" @keyup.enter.native="submitForm('ruleForm')"></el-input>
+                    <el-input type="password" placeholder="密码" v-model="ruleForm.password" @keyup.enter.native="submitForm('ruleForm')"></el-input>
                 </el-form-item>
                 <div class="user-btn">
-                    <el-button type="primary" style="width: 200px" size="big" @click="submitForm('ruleForm')">注册</el-button>
+                    <el-button type="primary" size="big" @click="submitForm('ruleForm')">注册</el-button>
                 </div>
             </el-form>
         </div>
@@ -64,7 +64,7 @@ export default {
 .account-container {
   background-size: cover;
   min-height: 100%;
-  padding-top: 150px;
+  padding-top: 180px;
   min-height: 100%;
   box-sizing: border-box;
   .ms-title {
@@ -74,14 +74,16 @@ export default {
     margin-bottom: 30px;
   }
   .ms-register{
-    max-width: 400px;
+    max-width: 320px;
     background-color: #fff;
     border-radius: 8px;
     padding: 40px;
     margin: 0 auto;
     .user-btn{
-      display: flex;
-      justify-content: center;
+      width: 100%;
+      .el-button--primary{
+        width: 100%;
+      }
     }
   }
 

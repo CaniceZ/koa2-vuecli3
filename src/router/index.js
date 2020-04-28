@@ -17,7 +17,10 @@ let router = new Router({
     {
       path: '/list',
       component: resolve => require(['../pages/List.vue'], resolve)
-    }
+    },{
+      path: '/',
+      component: resolve => require(['../pages/Login.vue'], resolve)
+    },
   ]
 })
 
