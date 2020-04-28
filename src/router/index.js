@@ -11,24 +11,24 @@ let router = new Router({
       component: resolve => require(['../pages/Login.vue'], resolve)
     },
     {
-      path: '/list',
-      component: resolve => require(['../pages/List.vue'], resolve)
+      path: '/register',
+      component: resolve => require(['../pages/Register.vue'], resolve)
     },
     {
-      path: '/',
-      redirect: '/login'
-    },
+      path: '/list',
+      component: resolve => require(['../pages/List.vue'], resolve)
+    }
   ]
 })
 
 function getCookie(name){
    var arr = document.cookie.match(new RegExp("(^| )"+name+"=([^;]*)(;|$)"));
    if(arr != null){
-     return unescape(arr[2]); 
+     return unescape(arr[2]);
    }else{
      return null;
    }
-} 
+}
 
 router.beforeEach((to, from, next) => {
   const token = getCookie('username');

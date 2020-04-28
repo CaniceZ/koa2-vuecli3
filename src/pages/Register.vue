@@ -1,7 +1,7 @@
 <template>
-    <div class="login-wrap">
-        <div class="ms-title">欢迎登录</div>
-        <div class="ms-login">
+    <div class="account-container" :style="{ background:'url(' + url + ') no-repeat center'}">
+        <div class="ms-title">欢迎注册</div>
+        <div class="ms-register">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="demo-ruleForm">
                 <el-form-item prop="username">
                     <el-input v-model="ruleForm.username" placeholder="username"></el-input>
@@ -9,10 +9,9 @@
                 <el-form-item prop="password">
                     <el-input type="password" placeholder="password" v-model="ruleForm.password" @keyup.enter.native="submitForm('ruleForm')"></el-input>
                 </el-form-item>
-                <div class="login-btn">
-                    <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
+                <div class="user-btn">
+                    <el-button type="primary" style="width: 200px" size="big" @click="submitForm('ruleForm')">注册</el-button>
                 </div>
-                <p v-if="$route.query.userInfo" style="font-size:12px;line-height:30px;color:#999;">Tips :用户名：{{$route.query.userInfo.username}}, 密码：{{$route.query.userInfo.password}}。</p>
             </el-form>
         </div>
     </div>
@@ -24,10 +23,10 @@ import { Ajax } from "@/utils";
 export default {
   data: function() {
     return {
-      url: process.env.VUE_APP_API,
+      url: require("../assets/images/bg.png"),
       ruleForm: {
         username: "",
-        password: ""
+        password: "",
       },
       rules: {
         username: [
@@ -37,25 +36,17 @@ export default {
       }
     };
   },
-  mounted(){
-    document.querySelector('.login-wrap').style.height = document.documentElement.clientHeight + 'px';
-    //注册跳转登录，自动复制账号密码
-    if(this.$route.query.userInfo){
-      this.ruleForm.username = this.$route.query.userInfo.username;
-      this.ruleForm.password = this.$route.query.userInfo.password;
-    }
-  },
   methods: {
-   submitForm(formName) {
+    submitForm(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
           const data = await Ajax(
             "post",
-            "/login.do",
+            "/register",
             this.ruleForm
           );
           if (data.code == 0) {
-            this.$router.push("/list");
+            this.$router.push({path: "/login",query: { userInfo: data.data}});
           }
           //sessionStorage.setItem('ms_username',this.ruleForm.username);
         } else {
@@ -70,38 +61,29 @@ export default {
 </script>
 
 <style scoped lang="less" type="text/less">
-.login-wrap {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background: rgb(50,50,120);
-  overflow: hidden;
+.account-container {
+  background-size: cover;
+  min-height: 100%;
+  padding-top: 150px;
+  min-height: 100%;
+  box-sizing: border-box;
   .ms-title {
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    margin-top: -230px;
-    text-align: center;
     font-size: 30px;
     color: #fff;
-  }
-  .ms-login {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 300px;
-    height: 160px;
-    margin: -150px 0 0 -190px;
-    padding: 40px;
-    border-radius: 5px;
-    background: #fff;
-  }
-  .login-btn {
     text-align: center;
+    margin-bottom: 30px;
   }
-  .login-btn button {
-    width: 100%;
-    height: 36px;
+  .ms-register{
+    max-width: 400px;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 40px;
+    margin: 0 auto;
+    .user-btn{
+      display: flex;
+      justify-content: center;
+    }
   }
+
 }
 </style>
