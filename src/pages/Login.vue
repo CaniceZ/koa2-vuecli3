@@ -21,7 +21,7 @@
 
 <script>
 import { Ajax } from "@/utils";
-
+import store from "@/store";
 export default {
   data: function() {
     return {
@@ -56,6 +56,7 @@ export default {
             this.ruleForm
           );
           if (data.code == 0) {
+            store.dispatch('getUserInfo', data.data)
             this.$router.push("/list");
           }
           //sessionStorage.setItem('ms_username',this.ruleForm.username);

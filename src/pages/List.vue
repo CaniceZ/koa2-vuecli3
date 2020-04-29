@@ -65,6 +65,7 @@
 
 <script>
 import { Ajax } from "@/utils";
+import store from "@/store";
 
 export default {
   created() {
@@ -111,7 +112,7 @@ export default {
         return false;
       }
       let obj = {
-        user_id: this.list.length + 1,
+        user_id: store.getters.userInfo.id,
         content: this.todos
       };
       let data = await Ajax("post", "/api/list/add", obj);

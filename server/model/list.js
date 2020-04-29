@@ -1,10 +1,9 @@
 // models/user.js
-const db = require('../config/db.js'), 
+const db = require('../config/db.js'),
       listModel = '../mysql/list.js'; // 引入user的表结构
 const TodolistDb = db.Todolist; // 引入数据库
 
-const List = TodolistDb.import(listModel); // 用sequelize的import方法引入表结构，实例化了User。
-
+const List = TodolistDb.import(listModel); // 用sequelize的import方法引入表结构，实例化了List。
 const getUserById = async function(id){
 	const userInfo = await List.findOne({
 		where: {
@@ -18,10 +17,10 @@ const getUserById = async function(id){
 const pageList = async function(params) {
 	//pageSize 每页10条数据 page 页数
 	let {pageSize, page} = params;
-	const list = await List.findAndCountAll({
+	const list = await List.sync().then(()=>List.findAndCountAll({
 			limit: pageSize*1,
 			offset: pageSize*(page - 1),
-	})
+	}))
 	return list
 }
 
