@@ -2,11 +2,9 @@
 const request = require('request');
 const sourceMap = require('source-map');
 
-const db = require('../config/db.js'), 
-      listModel = '../mysql/error.js'; // 引入user的表结构
-const TodolistDb = db.Todolist; // 引入数据库
+const db = require('../config/db.js');
+const ErrorList = db.ErrorList
 
-const List = TodolistDb.import(listModel); // 用sequelize的import方法引入表结构，实例化了User。
 
 
 //返回列表页数
@@ -17,7 +15,7 @@ const getList = async function(params) {
 	if(type){
 		findJson.type = type;
 	}
-	const list = await List.findAndCountAll({
+	const list = await ErrorList.findAndCountAll({
 			where: findJson,
 			limit: pageSize*1,
 			offset: pageSize*(page - 1),
@@ -34,7 +32,7 @@ function showMap(url, info){
 	//var rawSourceMapJsonData = fs.readFileSync(fileUrl, 'utf-8').toString();
 	//var consumer = await new sourceMap.SourceMapConsumer(rawSourceMapJsonData);
 	//console.log(consumer.originalPositionFor({line: 1, column:2363}))
-  
+
 	return new Promise(function (resolve, reject) {
 	  request.get(url, async function (error, response, body) {
 		if (!error && response.statusCode == 200) {
@@ -64,7 +62,7 @@ const addList = async function(data){
 			column: mapResult.column, // 报错文件列号
 			stack: errorInfo.stack // 报错堆栈
 		})
-		
+
 	}
 
 	if(new Date().getTime() - timeNow < 1e3 * 5){
@@ -83,7 +81,7 @@ const addList = async function(data){
 		return false;
 	}
 
-	const result = await List.create({
+	const result = await ErrorList.create({
 		type: type,
 		err: err,
 		ua: ua,

@@ -1,64 +1,66 @@
 <template>
     <div class="my-list">
-      <el-row class="content">
-            <el-col>
-              <span>
-                欢迎：{{name}}！你的待办事项是：
-              </span>
-
-              <el-row :gutter="24" class="head-top">
-                <el-col :span="20">
-                  <el-input placeholder="请输入待办事项" v-model="todos" @keyup.enter.native="addTodos"></el-input>
-                </el-col>
-                <el-col :span="4">
-                  <el-button size="small" class="finish-item" type="primary" @click="addTodos">确定</el-button>
-                </el-col>
-              </el-row>
-
-
-              <el-col :xs="24">
-                <template v-if="list.length">
-                  <template v-for="(item, index) in list">
-                    <div class="todo-list" :key="index">
-                      <span class="item no-finished">
-                        {{ index + 1 }}. {{ item.content }}
-                      </span>
-                      <span class="pull-right">
-                        <el-button size="small" class="finish-item" type="primary" @click="update(item)">编辑</el-button>
-                        <el-button class="remove-item" size="small" :plain="true" type="danger" @click="remove(item)">删除</el-button>
-                      </span>
-                    </div>
-                  </template>
-                </template>
-                <div class="page">
-                    <el-pagination
-                        @size-change="handleSizeChange"
-                        @current-change="handleCurrentChange"
-                        :page-sizes="pageSizeArray"
-                        :page-size="pageSize"
-                        layout="total, sizes, prev, pager, next, jumper"
-                        :total="total">
-                    </el-pagination>
-                </div>
-                <div v-if="!list.length">
-                  暂无待办事项
-                </div>
-              </el-col>
-            </el-col>
-          </el-row>
-
+      <span>
+        欢迎：{{name}}！你的待办事项是：
+      </span>
+      <el-row :gutter="24" class="head-top">
+        <el-col :span="20">
+          <el-input placeholder="请输入待办事项" v-model="todos" @keyup.enter.native="addTodos"></el-input>
+        </el-col>
+        <el-col :span="4">
+          <el-button size="small" class="finish-item" type="primary" @click="addTodos">确定</el-button>
+        </el-col>
+      </el-row>
+      <el-table
+        :data="list"
+        style="width: 100%">
+        <el-table-column
+          prop="id"
+          label="ID"
+          width="80">
+        </el-table-column>
+        <el-table-column
+          label="作者"
+          width="180">
+          <template slot-scope="scope">
+            {{scope.row.userInfo.username}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="content"
+          label="内容">
+        </el-table-column>
+        <el-table-column
+          label="操作"
+          width="300">
+          <template slot-scope="scope">
+            <el-button size="small" class="finish-item" type="primary" @click="update(scope.row)">编辑</el-button>
+            <el-button class="remove-item" size="small" :plain="true" type="danger" @click="remove(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="page">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :page-sizes="pageSizeArray"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total">
+        </el-pagination>
+      </div>
         <!--编辑、创建-->
-        <el-dialog title="编辑" :visible.sync="editActivityMessage" width="30%">
-            <el-form :model="editForm" :rules="rules" label-width="100px" ref="form-preview">
-                <el-form-item label="待办事项" prop="content">
-                    <el-input v-model="editForm.content"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="handleSave('form-preview')">确 定</el-button>
-                    <el-button @click="editActivityMessage = false">取 消</el-button>
-                </el-form-item>
-            </el-form>
-        </el-dialog>
+      <el-dialog title="编辑" :visible.sync="editActivityMessage" width="30%">
+          <el-form :model="editForm" :rules="rules" label-width="100px" ref="form-preview">
+              <el-form-item label="待办事项" prop="content">
+                  <el-input v-model="editForm.content"></el-input>
+              </el-form-item>
+              <el-form-item>
+                  <el-button type="primary" @click="handleSave('form-preview')">确 定</el-button>
+                  <el-button @click="editActivityMessage = false">取 消</el-button>
+              </el-form-item>
+          </el-form>
+      </el-dialog>
 
   </div>
 </template>
@@ -139,15 +141,6 @@ export default {
         this.getTodolist();
       }
     },
-    getUserInfo() {
-      const token = sessionStorage.getItem("demo-token");
-      if (token !== null && token !== "null") {
-        let decode = jwt.decode(token);
-        return decode;
-      } else {
-        return null;
-      }
-    },
     //获取列表
     async getTodolist() {
       const code = await Ajax("get", "/api/list/page", {
@@ -182,7 +175,7 @@ export default {
           let ajaxData = this.editForm;
           const data = await Ajax(
             "post",
-            this.$url + "/api/list/update",
+            "/api/list/update",
             ajaxData
           );
           if (data.code == 0) {
@@ -201,6 +194,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+  .my-list{
+    padding: 30px 100px;
+  }
 .head-top {
   margin: 20px 0;
 }
@@ -232,80 +228,5 @@ export default {
 .page {
   padding: 20px 0 20px;
   text-align: right;
-}
-.my-list {
-  @media screen and (max-width: 640px) {
-    .el-form-item__content button {
-      padding: 10px 10px;
-    }
-    .el-form-item__label {
-      width: auto !important;
-    }
-    .el-form-item__content {
-      margin-left: 80px !important;
-    }
-    .el-pagination .el-select .el-input,
-    .el-pagination__jump,
-    .el-pagination__sizes {
-      display: none !important;
-    }
-    .el-pagination {
-      .el-pagination__total {
-        display: block;
-        margin: 0;
-        text-align: center;
-      }
-    }
-    .page {
-      padding-top: 5px;
-      text-align: center;
-    }
-  }
-  .todo-list {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: flex;
-    line-height: 32px;
-    .item {
-      display: block;
-    }
-    .pull-right {
-      display: block;
-    }
-    .item {
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
-      -webkit-box-flex: 1;
-      -webkit-flex: 1;
-      flex: 1;
-    }
-  }
-  .content {
-    padding: 10px 10px;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  .el-dialog {
-    min-width: 300px;
-  }
-  .head-top {
-    width: 100%;
-    overflow: hidden;
-    margin-left: -12px !important;
-    margin-right: 0 !important;
-    .el-col-20 {
-      width: calc(100% - 78px);
-    }
-    .el-col-4 {
-      padding: 0 !important;
-      width: auto !important;
-      button {
-        height: 40px;
-        line-height: 40px;
-        padding: 0 20px;
-      }
-    }
-  }
 }
 </style>

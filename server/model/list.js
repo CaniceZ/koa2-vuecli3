@@ -1,9 +1,9 @@
 // models/user.js
-const db = require('../config/db.js'),
-      listModel = '../mysql/list.js'; // 引入user的表结构
-const TodolistDb = db.Todolist; // 引入数据库
-
-const List = TodolistDb.import(listModel); // 用sequelize的import方法引入表结构，实例化了List。
+const db = require('../config/db.js')
+const List = db.List
+const User = db.User
+//List.belongsTo(关联的模型, { foreignKey: '使用什么字段关联', targetKey: '与关联的模型那个字段关联', as: '别名' });
+List.belongsTo(User, {foreignKey: 'user_id', targetKey: 'id',as: 'userInfo'})
 const getUserById = async function(id){
 	const userInfo = await List.findOne({
 		where: {
@@ -17,9 +17,16 @@ const getUserById = async function(id){
 const pageList = async function(params) {
 	//pageSize 每页10条数据 page 页数
 	let {pageSize, page} = params;
+
 	const list = await List.sync().then(()=>List.findAndCountAll({
 			limit: pageSize*1,
 			offset: pageSize*(page - 1),
+      order: [['updatedAt', 'DESC']],
+      include: [{
+			  attributes:["username"],
+        model: User,
+        as: 'userInfo'
+      }]
 	}))
 	return list
 }
