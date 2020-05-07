@@ -5,6 +5,10 @@ module.exports = function(sequelize, DataTypes){
       type: DataTypes.INTEGER(11),
       allowNull: true
     },
+    updaterId: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true
+    },
     content: {
       type: DataTypes.CHAR(255),
       allowNull: true

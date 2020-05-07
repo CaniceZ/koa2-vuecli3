@@ -4,6 +4,7 @@ const List = db.List
 const User = db.User
 //List.belongsTo(关联的模型, { foreignKey: '使用什么字段关联', targetKey: '与关联的模型那个字段关联', as: '别名' });
 List.belongsTo(User, {foreignKey: 'user_id', targetKey: 'id',as: 'userInfo'})
+List.belongsTo(User, {foreignKey: 'updaterId', targetKey: 'id',as: 'updater'})
 const getUserById = async function(id){
 	const userInfo = await List.findOne({
 		where: {
@@ -26,7 +27,12 @@ const pageList = async function(params) {
 			  attributes:["username"],
         model: User,
         as: 'userInfo'
-      }]
+      },
+        {
+          attributes:["username"],
+          model: User,
+          as: 'updater'
+        }]
 	}))
 	return list
 }
@@ -55,6 +61,7 @@ const addList = async function(data){
 		user_id: data.user_id,
 		content: data.content,
 		status:1,
+    updaterId: data.user_id,
 	})
 	return true
 }
@@ -63,12 +70,12 @@ const addList = async function(data){
 const updateList = async function(data){
 	const result = await List.update(
 		{
-		  content:data.content
+		  content:data.content,
+      updaterId: data.updaterId
 		},
 		{
 		  where: {
-		    id: data.id,
-		    user_id: data.userId
+		    id: data.id
 		  }
 		}
 	)

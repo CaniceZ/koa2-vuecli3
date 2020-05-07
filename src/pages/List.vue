@@ -27,6 +27,13 @@
           </template>
         </el-table-column>
         <el-table-column
+          label="最后修改者"
+          width="180">
+          <template slot-scope="scope">
+            {{scope.row.updater.username}}
+          </template>
+        </el-table-column>
+        <el-table-column
           prop="content"
           label="内容">
         </el-table-column>
@@ -166,6 +173,7 @@ export default {
       this.editForm.id = item.id;
       this.editForm.content = item.content;
       this.editForm.userId = item.user_id;
+      this.editForm.updaterId = store.getters.userInfo.id
     },
     //更新
     async handleSave(formName) {
