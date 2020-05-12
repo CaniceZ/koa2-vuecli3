@@ -53,6 +53,18 @@ const login = async function(ctx){
           overwrite: false  // 是否允许重写
         }
       )
+      console.log(result.userInfo.id)
+      ctx.cookies.set(
+        'userId',
+        result.userInfo.id,
+        {
+          //domain: 'localhost',  // 写cookie所在的域名
+          //path: '/',       // 写cookie所在的路径
+          maxAge: 1 * 24 * 60 * 60 * 1000, // cookie有效时长 1天
+          httpOnly: false,  // 是否只用于http请求中获取
+          overwrite: false  // 是否允许重写
+        }
+      )
     }else{
       ctx.body = {
         code: 1,
@@ -72,7 +84,25 @@ const login = async function(ctx){
 
 }
 
+const userInfo = async function(ctx) {
+  const data = ctx.request.body;//post
+  const result = await user.getUserInfo(data);
+  if (result) {
+    ctx.body = {
+      code: 0,
+      msg: '获取用户信息成功！',
+      data: result.userInfo
+    }
+  }else{
+    ctx.body = {
+      code: 1,
+      msg: '获取用户信息失败！',
+    }
+    return
+  }
+}
 module.exports = {
   register,
-  login
+  login,
+  userInfo
 }

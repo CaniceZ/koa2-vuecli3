@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import { Ajax } from "@/utils";
+import Cookie from "js-cookie"
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -11,8 +12,17 @@ export default new Vuex.Store({
     userInfo: state => state.userInfo
   },
   mutations: {
-    GETUSERINFO: (state, userInfo) => {
-      state.userInfo = userInfo;
+    GETUSERINFO: (state,userInfo) => {
+      Ajax(
+        "post",
+        "/info.do",
+        {userId: userInfo}
+      ).then(
+        res => {
+          state.userInfo = res.data;
+        }
+      );
+
     },
   },
   actions: {

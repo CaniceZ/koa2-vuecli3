@@ -37,8 +37,22 @@ const login = async function(data){
     }
   }
 }
+const getUserInfo = async function(data){
+  let usernameQuery = await User.findOne({where: {id: data.userId}}) //查看注册用户名是否存在
+  if(usernameQuery){//存在返回true
+    let data = usernameQuery.dataValues
+    delete data.password
+    return {
+      'userInfo': data
+    }
+  }else{
+    //不存在该用户
+    return false
+  }
+}
 
 module.exports = {
   register,
-  login
+  login,
+  getUserInfo
 }

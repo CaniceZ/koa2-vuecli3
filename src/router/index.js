@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-//import HelloWorld from '@/components/HelloWorld'
+import store from "@/store";
+import Cookie from "js-cookie";
 
 Vue.use(Router)
 
@@ -13,13 +14,15 @@ let router = new Router({
     {
       path: '/register',
       component: resolve => require(['../pages/Register.vue'], resolve)
-    },
-    {
+    }
+    , {
       path: '/list',
       component: resolve => require(['../pages/List.vue'], resolve)
-    },{
-      path: '/',
-      component: resolve => require(['../pages/Login.vue'], resolve)
+    },
+    {
+      path: '',
+      redirect: "/list",
+      component: resolve => require(['../pages/List.vue'], resolve)
     },
   ]
 })
@@ -34,13 +37,26 @@ function getCookie(name){
 }
 
 router.beforeEach((to, from, next) => {
-  const token = getCookie('username');
+  const token = getCookie('userId');
+  console.log(token)
   if (to.path === '/login') { // 如果是跳转到登录页的
-    next()
+    if(token !== null){
+      console.log(1)
+      next({ path: "/list" });
+    }else{
+      console.log(2)
+      next()
+    }
   } else {
-    if (token !== 'null' && token !== null) {
-      next() // 如果有token就正常转向
+    if (token !== null) {
+      store.dispatch('getUserInfo', Cookie.get('userId')).then(
+        ()=>{
+          console.log(3)
+          next() // 如果有token就正常转向
+        }
+      )
     } else {
+      console.log(4)
       next('/login') // 否则跳转回登录页
     }
   }

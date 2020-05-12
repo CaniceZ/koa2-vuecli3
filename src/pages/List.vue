@@ -1,7 +1,20 @@
 <template>
+  <div>
+    <div class="header">
+      <el-dropdown >
+      <span class="el-dropdown-link">
+        {{username}} <i class="el-icon-arrow-down el-icon--right"></i>
+      </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>
+            <span @click="logOut">退出登录</span>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
     <div class="my-list">
       <span>
-        欢迎：{{name}}！你的待办事项是：
+        欢迎：{{username}}！你的待办事项是：
       </span>
       <el-row :gutter="24" class="head-top">
         <el-col :span="20">
@@ -68,14 +81,14 @@
               </el-form-item>
           </el-form>
       </el-dialog>
-
+    </div>
   </div>
 </template>
 
 <script>
 import { Ajax } from "@/utils";
 import store from "@/store";
-
+import Cookie from "js-cookie";
 export default {
   created() {
     // const userInfo = this.getUserInfo()
@@ -90,6 +103,7 @@ export default {
   },
   data() {
     return {
+      username:store.getters.userInfo.username,
       url: process.env.VUE_APP_API,
       name: "",
       todos: "",
@@ -196,6 +210,12 @@ export default {
           }
         }
       });
+    },
+    logOut(){
+      console.log(111)
+      Cookie.remove('userId');
+      this.$router.push('/login')
+      location.reload()
     }
   }
 };
@@ -231,6 +251,15 @@ export default {
 .todo-list {
   margin-bottom: 10px;
 }
+  .header{
+    padding: 20px;
+    display: flex;
+    background-color: #409EFF;
+    justify-content: flex-end;
+    .el-dropdown{
+      color: #fff;
+    }
+  }
 </style>
 <style lang="less" >
 .page {
