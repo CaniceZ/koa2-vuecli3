@@ -24,6 +24,11 @@ let router = new Router({
       redirect: "/list",
       component: resolve => require(['../pages/List.vue'], resolve)
     },
+    ,
+    {
+      path: '/sign',
+      component: resolve => require(['../pages/Sign.vue'], resolve)
+    },
   ]
 })
 

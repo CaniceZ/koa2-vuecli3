@@ -2,9 +2,11 @@ const appKoa = new require('koa')
   , koa = require('koa-router')()
   , path =require('path')
   , serve = require('koa-static')
+  , scheduleObjectLiteralSyntax = require('./schedule')
   , list = require('./routes/list.js')
-  , user = require('./routes/user.js');
-
+  , user = require('./routes/user.js')
+  , signdata = require('./routes/datas.js');
+// const SignData = require('./model/signdata.js');
 app = new appKoa();
 
 
@@ -16,14 +18,13 @@ app.use(require('koa-bodyparser')());
 app.on('error', function(err, ctx){
   console.log('server error', err);
 });
-
+scheduleObjectLiteralSyntax()//12点定时清除签到状态
 koa.use('/api', list.routes()); // 挂载到koa-router上，同时会让所有的list的请求路径前面加上'/api'的请求路径。
 koa.use(user.routes())
-
+koa.use('/data', signdata.routes());
 app.use(koa.routes()); // 将路由规则挂载到Koa上。
-
 app.listen(3000,() => {
   console.log('Koa is listening in 3000');
 });
-
+// SignData.updateSignDays()
 module.exports = app;
