@@ -25,7 +25,6 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@types/sequelize": "^4.28.8",
     "@vue/cli-plugin-babel": "^3.2.2",
     "@vue/cli-service": "^3.2.3",
     "@vue/test-utils": "^1.0.0-beta.28",

@@ -1,7 +1,7 @@
-
+const Sequelize = require('sequelize'); // 引入sequelize
 const db = require('../config/db.js');
+const Op = Sequelize.Op;
 const SignData = db.SignData
-
 //获取用户签到信息
 const getSignData = async function(data){
   if(!data.userId){
@@ -78,7 +78,9 @@ const updateSignDays = async function(){
     },
     {
       where: {
-        days: [1,2,3,4,5,6]
+        days: {
+          [Op.gt]: 0
+        }
       },
     }
   )
