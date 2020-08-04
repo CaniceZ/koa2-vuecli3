@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+package AppMenuReq;
+
+//option optimize_for = LITE_RUNTIME;
+
+option java_package = "com.shenqi.api.protocol.request";
+option java_outer_classname = "AppMenuReq";
+
+message getMenuList {
+    optional string platformId = 1 [default = ""];
+    optional string appId = 2 [default = ""];
+}

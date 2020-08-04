@@ -1,0 +1,17 @@
+syntax = "proto2";
+
+package AppMenuResq;
+
+option java_package = "com.shenqi.api.protocol.response";
+option java_outer_classname = "AppMenuResq";
+
+//栏目列表
+message MenuList {
+    repeated Menu list = 1;
+}
+
+//栏目信息
+message Menu {
+    required int32 menuId = 1;//栏目ID
+    required string menuName = 2;//栏目名称
+}

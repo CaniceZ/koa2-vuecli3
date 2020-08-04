@@ -3,7 +3,6 @@ const schedule = require('node-schedule');
 const SignData = require('../model/signdata.js');
 
 function scheduleObjectLiteralSyntax(){
-
   //dayOfWeek
   //month
   //dayOfMonth

@@ -1,0 +1,61 @@
+{
+  "nested": {
+    "AppMenuReq": {
+      "options": {
+        "java_package": "com.shenqi.api.protocol.request",
+        "java_outer_classname": "AppMenuReq"
+      },
+      "nested": {
+        "getMenuList": {
+          "fields": {
+            "platformId": {
+              "type": "string",
+              "id": 1,
+              "options": {
+                "default": ""
+              }
+            },
+            "appId": {
+              "type": "string",
+              "id": 2,
+              "options": {
+                "default": ""
+              }
+            }
+          }
+        }
+      }
+    },
+    "AppMenuResq": {
+      "options": {
+        "java_package": "com.shenqi.api.protocol.response",
+        "java_outer_classname": "AppMenuResq"
+      },
+      "nested": {
+        "MenuList": {
+          "fields": {
+            "list": {
+              "rule": "repeated",
+              "type": "Menu",
+              "id": 1
+            }
+          }
+        },
+        "Menu": {
+          "fields": {
+            "menuId": {
+              "rule": "required",
+              "type": "int32",
+              "id": 1
+            },
+            "menuName": {
+              "rule": "required",
+              "type": "string",
+              "id": 2
+            }
+          }
+        }
+      }
+    }
+  }
+}

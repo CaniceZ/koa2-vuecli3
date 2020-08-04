@@ -6,7 +6,7 @@ module.exports = {
     config.plugins.delete('prefetch')
   },
   devServer: {
-    proxy: process.env.VUE_APP_API
-    // proxy: process.env.VUE_APP_SERVICE_API
+    // proxy: process.env.VUE_APP_API //普通http请求头
+    proxy: process.env.VUE_APP_REQ_DOMAIN //protobuf请求头
   }
 }

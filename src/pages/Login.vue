@@ -21,6 +21,7 @@
 
 <script>
 import { Ajax } from "@/utils";
+import request from '@/utils/request'
 export default {
   data: function() {
     return {
@@ -37,7 +38,23 @@ export default {
       }
     };
   },
-  mounted(){
+  async mounted(){
+     request({
+      url: '/menu/v1/getMenuList', // 请求地址
+      method: 'post',
+      reqDesction: 'AppMenuReq.getMenuList', // 请求体
+      resDesction: 'AppMenuResq.MenuList', // 返回体
+      data:{"appId":"76sy001","platformId":"76box"}, // 参数数据
+    }).then(res=>{
+       if(res.state==1){
+         console.log(res)
+       }else{
+         console.log("请求失败")
+       }
+     }).catch(err=>{
+       console.log(err,'aaa')
+     })
+
     document.querySelector('.login-wrap').style.height = document.documentElement.clientHeight + 'px';
     //注册跳转登录，自动复制账号密码
     if(this.$route.query.userInfo){
